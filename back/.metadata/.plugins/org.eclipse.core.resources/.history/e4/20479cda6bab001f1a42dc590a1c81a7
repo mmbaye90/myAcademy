@@ -1,0 +1,55 @@
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
+@ServerEndpoint("/ws/users")
+public class UserServiceWebSocket {
+	
+	private static final Map<String,Session> sessions = Collections.synchronizedMap(new HashMap<>());
+	
+	// Lorsqu'un client se connecte
+    @OnOpen
+    public void onOpen(Session session) {
+        String userId = getUserIdFromSession(session);  // Vous pourriez utiliser un identifiant utilisateur
+        sessions.put(userId, session);
+        System.out.println("New WebSocket connection: " + session.getId() + " (User: " + userId + ")");
+    }
+
+    // Lorsqu'un client se déconnecte
+    @OnClose
+    public void onClose(Session session) {
+        String userId = getUserIdFromSession(session);
+        sessions.remove(userId);
+        System.out.println("WebSocket connection closed: " + session.getId() + " (User: " + userId + ")");
+    }
+
+    // Lorsqu'une erreur se produit dans une session
+    @OnError
+    public void onError(Session session, Throwable throwable) {
+        System.err.println("WebSocket error: " + throwable.getMessage());
+    }
+
+    // Lorsqu'un message est reçu d'un client
+    @OnMessage
+    public void onMessage(String message, Session session) {
+        System.out.println("Received message from user: " + message);
+        // Traitement du message si nécessaire
+    }
+    
+    
+    private String getUserIdFromSession(Session session) {
+        // Cette logique doit être définie en fonction de la manière dont vous gérez les utilisateurs
+        // Cela peut être basé sur un attribut de session ou une autre source
+        return session.getId(); // Exemple basique : utiliser l'ID de session comme identifiant utilisateur
+    }
+	
+//	============================= END ========================
+
+}

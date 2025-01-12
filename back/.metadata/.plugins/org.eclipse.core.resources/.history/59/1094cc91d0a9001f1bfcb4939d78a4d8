@@ -1,0 +1,101 @@
+package Database;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+
+
+public class ConnectionManager {
+    private static final String url = "jdbc:mysql://localhost:3306/jeuxVideo?serverTimezone=UTC";
+    private static final String utilisateur = "root";
+    private static final String motDePasse = "";
+    private static Connection connexion = null; 
+   
+    private static HikariDataSource dataSource;
+    
+    static {
+        try {
+            System.out.println("Initialisation du HikariConfig...");
+
+            HikariConfig config = new HikariConfig();
+            
+            // SINGLETON CONNEXION SETTING
+            config.setJdbcUrl(url);
+            config.setUsername(utilisateur);
+            config.setPassword(motDePasse);
+
+            // POOL CONNEXION SETTING
+            config.setMaximumPoolSize(10);
+            config.setMinimumIdle(2);
+            config.setIdleTimeout(30000);
+            config.setMaxLifetime(1800000);
+            config.setLeakDetectionThreshold(2000);
+            config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+            System.out.println("Configuration terminée. Initialisation de la DataSource...");
+
+            // AFFECTATION DATASOURCE
+            dataSource = new HikariDataSource(config);
+            System.out.println("DataSource initialisée avec succès !");
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'initialisation de la DataSource !");
+            e.printStackTrace();
+        }
+    }
+
+
+    public static Connection getConnection() {
+        try {
+            if (dataSource == null) {
+                throw new IllegalStateException("La datasource n'a pas été initialisée correctement.");
+            }
+
+            Connection connexion = dataSource.getConnection();
+            System.out.println("CONNEXION A LA BD REUSSIE !");
+            return connexion;
+
+        } catch (SQLException e) {
+            System.err.println("CONNEXION A LA BD ECHOUEE !");
+            e.printStackTrace();
+            throw new RuntimeException("Impossible d'obtenir une connexion à la base de données.", e);
+        }
+    }
+
+
+    public static void closeDataSource() {
+        if (dataSource != null) {
+            dataSource.close();
+            System.out.println("Pool de connexions fermé.");
+        }
+    }
+    
+    
+    
+   
+//	public static Connection getConnection() {
+//        try {
+//            if (connexion == null || connexion.isClosed()) {
+//               
+//                Class.forName("com.mysql.jdbc.Driver");
+//                
+//                connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
+//                System.out.println("CONNEXION TO DB SUCCESS !!!");
+//            }
+//        } catch (SQLException | ClassNotFoundException ex) {
+//        	System.out.println("CONNEXION TO DB FAILLED !!!");
+//        	ex.printStackTrace();
+//        }
+//        return connexion;
+//    }
+	
+	
+
+	
+	//============================== FIN METHODE ===================
+
+}

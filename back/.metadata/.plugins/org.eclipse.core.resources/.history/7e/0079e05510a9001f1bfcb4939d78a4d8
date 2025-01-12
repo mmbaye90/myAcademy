@@ -1,0 +1,56 @@
+package Database;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+
+
+public class ConnectionManager {
+    private static final String url = "jdbc:mysql://localhost:3306/jeuxVideo";
+    private static final String utilisateur = "root";
+    private static final String motDePasse = "";
+    private static Connection connexion = null; 
+   
+    private static HikariDataSource dataSource;
+ 
+    	
+    	var config = new HikariConfig();
+    	
+    	//SINGLETON CONNEXION SETTING
+    	config.setJdbcUrl(url);
+    	config.setUsername(utilisateur);
+    	config.setPassword(motDePasse);
+    	
+    	//POOL CONNEXION SETTING
+    	config.setMaximumPoolSize(10);
+    	
+
+
+   
+	public static Connection getConnection() {
+        try {
+            if (connexion == null || connexion.isClosed()) {
+               
+                Class.forName("com.mysql.jdbc.Driver");
+                
+                connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
+                System.out.println("CONNEXION A LA BD REUISSIE !!!");
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+        	System.out.println("CONNEXION A LA BD ECHOUEE !!!");
+        	ex.printStackTrace();
+        }
+        return connexion;
+    }
+	
+	
+	
+	
+	//============================== FIN METHODE ===================
+
+}

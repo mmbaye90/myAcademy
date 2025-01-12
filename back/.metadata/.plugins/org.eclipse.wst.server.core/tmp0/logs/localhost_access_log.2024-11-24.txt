@@ -1,0 +1,14 @@
+127.0.0.1 - - [24/Nov/2024:23:13:23 +0100] "GET / HTTP/1.1" 404 681
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:13:25 +0100] "GET /reseauSocial/WEB-INF/classes/UserServiceWebSocket.java HTTP/1.1" 404 604
+127.0.0.1 - - [24/Nov/2024:23:19:03 +0100] "GET / HTTP/1.1" 404 681
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:19:04 +0100] "GET /reseauSocial/WEB-INF/classes/UserServiceWebSocket.java HTTP/1.1" 404 604
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:20:03 +0100] "GET /reseauSocial/ws/users HTTP/1.1" 404 710
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:20:31 +0100] "GET /reseauSocial HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:20:31 +0100] "GET /reseauSocial/ HTTP/1.1" 404 698
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:20:37 +0100] "GET /reseauSocial HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:20:37 +0100] "GET /reseauSocial/ HTTP/1.1" 404 698
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:21:12 +0100] "GET /reseauSocial/Test HTTP/1.1" 200 2435
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:21:18 +0100] "GET /reseauSocial/UserServiceWebSocket HTTP/1.1" 404 718
+127.0.0.1 - - [24/Nov/2024:23:25:30 +0100] "GET / HTTP/1.1" 404 681
+0:0:0:0:0:0:0:1 - - [24/Nov/2024:23:25:31 +0100] "GET /reseauSocial/WEB-INF/classes/UserServiceWebSocket.java HTTP/1.1" 404 604
+127.0.0.1 - - [24/Nov/2024:23:50:57 +0100] "GET /reseauSocial/ws/users HTTP/1.1" 101 -

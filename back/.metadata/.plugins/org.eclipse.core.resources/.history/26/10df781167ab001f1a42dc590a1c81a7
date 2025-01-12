@@ -1,0 +1,25 @@
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
+@ServerEndpoint("/ws/users")
+public class UserServiceWebSocket {
+	
+	private static final Map<String,Session> sessions = Collections.synchronizedMap(new HashMap<>());
+	
+	@OnOpen
+	public void onOpen(Session session) {
+		
+		String userId = session.getId();
+		
+		sessions.put(userId, session);
+		
+		System.out.println("Connexion with id : " + userId);
+		
+	};
+
+}
