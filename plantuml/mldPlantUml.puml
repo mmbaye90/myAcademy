@@ -1,0 +1,158 @@
+@startuml MLD_Style
+
+' Applique le style à toutes les entités (tables)appelé ici classe
+' pour la'application des styles
+skinparam class {
+    BorderColor #000000
+    FontColor #000000
+    FontSize 12
+    FontName Arial
+    Padding 10
+}
+
+' Définir l'entité Utilisateur
+class "Utilisateur" #LightBlue{
+    utilisateur_id 
+    role 
+    prenom 
+    nom 
+    email
+    mot_de_passe 
+    image_url 
+    bio 
+    programme
+    specialisation
+    poste_admin 
+    date_creation 
+    date_mise_ajour 
+}
+
+' Définir l'entité Evenement
+class "Evenement" #LightCyan {
+    evenement_id 
+    titre
+    description 
+    localisation
+    type_evenement
+    visibilite
+    nbr_max_part
+    debut 
+    fin
+    date_creation 
+}
+
+' Définir l'entité Notification
+class "Notification" #LightCoral {
+    notification_id 
+    type_notif
+    titre 
+    message 
+    lien 
+    status
+    date_creation
+    utilisateur_id 
+}
+
+' Définir l'entité GroupeCollaboratif
+class "GroupeCollaboratif" #LightGoldenRodYellow {
+    groupe_collaboratif_id 
+    nom
+    description 
+    type
+    date_creation 
+}
+
+' Définir l'entité Categorie
+class "Categorie" #LightGray {
+    categorie_id
+    nom
+    description 
+    date_creation 
+}
+
+' Définir l'entité Ressource
+class "Ressource" #LightPink {
+    ressource_id 
+    titre 
+    description
+    url_fichier
+    visibilite 
+    date_creation
+    categorie_id
+}
+
+' Définir l'entité Publication
+class "Publication" #LightSalmon {
+    publication_id
+    contenu
+    media_url 
+    visibilite 
+    date_creation
+    date_mis_ajour
+    groupe_collaboratif_id
+    utilisateur_id 
+}
+
+' Définir l'entité Message
+class "Message" #LightSeaGreen {
+    message_id
+    contenu 
+    url_fichier 
+    date_creation 
+    groupe_collaboratif_id 
+    utilisateur_id
+}
+
+' Définir l'entité Commentaire
+class "Commentaire" #LightSkyBlue {
+    commentaire_id 
+    contenu 
+    date_creation 
+    publication_id
+    utilisateur_id
+}
+
+' Définir l'entité EspaceMembre
+class "EspaceMembre" #LightSlateGray {
+    utilisateur_id 
+    groupe_collaboratif_id
+    date_inscription 
+}
+
+' Définir l'entité UtilisateurParticipant
+class "UtilisateurParticipant" #LightGoldenRodYellow {
+    utilisateur_id 
+    evenement_id
+    date_inscription 
+}
+
+' Définir l'entité RessourceTelechargee
+class "RessourceTelechargee" #LightCoral {
+    utilisateur_id 
+    ressource_id 
+    date_telechargement 
+}
+
+' Relations entre les entités
+Utilisateur <-- Notification 
+Utilisateur <-- Publication 
+Utilisateur <-- Message 
+Utilisateur <-- Commentaire 
+Utilisateur <-- EspaceMembre 
+Utilisateur <-- UtilisateurParticipant
+Utilisateur <-- RessourceTelechargee 
+
+Evenement -- UtilisateurParticipant 
+Notification -- Utilisateur 
+
+GroupeCollaboratif -- Publication 
+GroupeCollaboratif -- Message 
+GroupeCollaboratif -- EspaceMembre
+
+Categorie -- Ressource 
+
+Ressource -- RessourceTelechargee
+
+Publication -- Commentaire 
+
+@enduml

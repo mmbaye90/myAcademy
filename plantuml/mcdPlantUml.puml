@@ -1,0 +1,161 @@
+@startuml MCD
+
+' Style général
+skinparam entity {
+    BackgroundColor LightGray
+    FontColor Black
+    FontSize 12
+    FontName Arial
+    BorderColor Black
+}
+skinparam class {
+    ArrowColor Black
+    FontColor Black
+    BackgroundColor White
+    BorderColor Black
+    FontSize 12
+    FontName Arial
+}
+skinparam circle {
+    BackgroundColor #F5F5DC
+    BorderColor Black
+    FontColor Black
+    FontSize 12
+    FontName Arial
+}
+
+' Définition des entités principales
+entity "Utilisateur" as Utilisateur {
+    + utilisateur_id : INT <<PK>>
+    role : CHAR(50)
+    prenom : VARCHAR(50)
+    nom : VARCHAR(50)
+    email : VARCHAR(255) <<UNIQUE>>
+    mot_de_passe : VARCHAR(255)
+    image_url : TEXT
+    bio : TEXT
+    programme : VARCHAR(50)
+    specialisation : VARCHAR(50)
+    poste_admin : VARCHAR(50)
+    date_creation : DATE
+    date_mise_ajour : DATE
+}
+
+entity "Evenement" as Evenement {
+    + evenement_id : INT <<PK>>
+    titre : VARCHAR(50)
+    description : VARCHAR(255)
+    localisation : VARCHAR(50)
+    type_evenement : VARCHAR(50)
+    visibilite : VARCHAR(50)
+    nbr_max_part : INT
+    debut : DATE
+    fin : DATE
+    date_creation : DATE
+}
+
+entity "Notification" as Notification {
+    + notification_id : INT <<PK>>
+    type_notif : VARCHAR(50)
+    titre : VARCHAR(255)
+    message : TEXT
+    lien : TEXT
+    status : VARCHAR(50)
+    date_creation : VARCHAR(50)
+    utilisateur_id : INT <<FK>>
+}
+
+entity "GroupeCollaboratif" as GroupeCollaboratif {
+    + groupe_collaboratif_id : INT <<PK>>
+    nom : VARCHAR(50)
+    description : TEXT
+    type : VARCHAR(50)
+    date_creation : DATE
+}
+
+entity "Categorie" as Categorie {
+    + categorie_id : INT <<PK>>
+    nom : VARCHAR(50)
+    description : VARCHAR(150)
+    date_creation : DATE
+}
+
+entity "Ressource" as Ressource {
+    + ressource_id : INT <<PK>>
+    titre : VARCHAR(50)
+    description : VARCHAR(255)
+    url_fichier : TEXT
+    visibilite : VARCHAR(50)
+    date_creation : DATE
+    categorie_id : INT <<FK>>
+}
+
+entity "Publication" as Publication {
+    + publication_id : INT <<PK>>
+    contenu : TEXT
+    media_url : TEXT
+    visibilite : VARCHAR(50)
+    date_creation : DATE
+    date_mis_ajour : DATE
+    groupe_collaboratif_id : INT <<FK>>
+    utilisateur_id : INT <<FK>>
+}
+
+entity "Message" as Message {
+    + message_id : INT <<PK>>
+    contenu : TEXT
+    url_fichier : TEXT
+    date_creation : DATE
+    groupe_collaboratif_id : INT <<FK>>
+    utilisateur_id : INT <<FK>>
+}
+
+entity "Commentaire" as Commentaire {
+    + commentaire_id : INT <<PK>>
+    contenu : TEXT
+    date_creation : DATE
+    publication_id : INT <<FK>>
+    utilisateur_id : INT <<FK>>
+}
+
+' Définition des associations (ellipses) avec leurs attributs
+entity "EspaceMembre" as EspaceMembre <<ellipse>> {
+    + utilisateur_id : INT <<PK, FK>>
+    + groupe_collaboratif_id : INT <<PK, FK>>
+    date_inscription : DATE
+}
+
+entity "UtilisateurParticipant" as UtilisateurParticipant <<ellipse>> {
+    + utilisateur_id : INT <<PK, FK>>
+    + evenement_id : INT <<PK, FK>>
+    date_inscription : DATE
+}
+
+entity "RessourceTelechargee" as RessourceTelechargee <<ellipse>> {
+    + utilisateur_id : INT <<PK, FK>>
+    + ressource_id : INT <<PK, FK>>
+    date_telechargement : DATE
+}
+
+' Relations bidirectionnelles avec cardinalités minimales et maximales
+Utilisateur ||--|| Notification : "1,1" "0,*"
+Utilisateur ||--|| Publication : "1,1" "0,*"
+Utilisateur ||--|| Message : "1,1" "0,*"
+Utilisateur ||--|| Commentaire : "1,1" "0,*"
+Utilisateur ||--|| EspaceMembre : "1,1" "0,*"
+Utilisateur ||--|| UtilisateurParticipant : "1,1" "0,*"
+Utilisateur ||--|| RessourceTelechargee : "1,1" "0,*"
+
+Evenement ||--|| UtilisateurParticipant : "1,1" "0,*"
+
+GroupeCollaboratif ||--|| Publication : "1,1" "0,*"
+GroupeCollaboratif ||--|| Message : "1,1" "0,*"
+GroupeCollaboratif ||--|| EspaceMembre : "1,1" "0,*"
+
+Categorie ||--|| Ressource : "1,1" "0,*"
+
+Ressource ||--|| RessourceTelechargee : "1,1" "0,*"
+
+Publication ||--|| Commentaire : "1,1" "0,*"
+
+@enduml

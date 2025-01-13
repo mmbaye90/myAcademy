@@ -1,0 +1,159 @@
+@startuml DIAGRAMME_CLASSE
+' Styles pour la coloration des entêtes
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor #000000
+    FontColor #000000
+    FontSize 12
+    FontName Arial
+    StereotypeFontSize 12
+    StereotypeFontColor #000000
+
+}
+' Limiter à 2 niveaux
+skinparam classBodyHeight 80   ' Ajuste la hauteur du corps des classes pour s'assurer qu'il n'y ait que deux niveaux
+
+' Applique l'espacement entre les sections de la classe (deuxième niveau)
+skinparam classAttributeIconSize 0
+skinparam classHeaderHeight 10  ' Ajuste la hauteur de l'en-tête des classes pour limiter les niveaux
+
+' Appliquer la taille du texte des relations (y compris les annotations de multiplicité)
+skinparam relationFontSize 16  ' Augmente la taille du texte des relations
+
+
+' Couleurs pour les différentes entités
+class Utilisateur #LightBlue {
+  - utilisateur_id : INT <<PK>>
+  - role : CHAR(50)
+  - prenom : VARCHAR(50)
+  - nom : VARCHAR(50)
+  - email : VARCHAR(255) <<UNIQUE>>
+  - mot_de_passe : VARCHAR(255)
+  - image_url : TEXT
+  - bio : TEXT
+  - programme : VARCHAR(50)
+  - specialisation : VARCHAR(50)
+  - poste_admin : VARCHAR(50)
+  - date_creation : DATE
+  - date_mise_ajour : DATE
+}
+
+class Evenement #LightGreen {
+  - evenement_id : INT <<PK>>
+  - titre : VARCHAR(50)
+  - description : VARCHAR(255)
+  - localisation : VARCHAR(50)
+  - type_evenement : VARCHAR(50)
+  - visibilite : VARCHAR(50)
+  - nbr_max_part : INT
+  - debut : DATE
+  - fin : DATE
+  - date_creation : DATE
+}
+
+class Notification #LightYellow {
+  - notification_id : INT <<PK>>
+  - type_notif : VARCHAR(50)
+  - titre : VARCHAR(255)
+  - message : TEXT
+  - lien : TEXT
+  - status : VARCHAR(50)
+  - date_creation : VARCHAR(50)
+  - utilisateur_id : INT <<FK>>
+}
+
+class GroupeCollaboratif #Thistle {
+  - groupe_collaboratif_id : INT <<PK>>
+  - nom : VARCHAR(50)
+  - description : TEXT
+  - type : VARCHAR(50)
+  - date_creation : DATE
+}
+
+class Categorie #PeachPuff {
+  - categorie_id : INT <<PK>>
+  - nom : VARCHAR(50)
+  - description : VARCHAR(150)
+  - date_creation : DATE
+}
+
+class Ressource #MistyRose {
+  - ressource_id : INT <<PK>>
+  - titre : VARCHAR(50)
+  - description : VARCHAR(255)
+  - url_fichier : TEXT
+  - visibilite : VARCHAR(50)
+  - date_creation : DATE
+  - categorie_id : INT <<FK>>
+}
+
+class Publication #Lavender {
+  - publication_id : INT <<PK>>
+  - contenu : TEXT
+  - media_url : TEXT
+  - visibilite : VARCHAR(50)
+  - date_creation : DATE
+  - date_mis_ajour : DATE
+  - groupe_collaboratif_id : INT <<FK>>
+  - utilisateur_id : INT <<FK>>
+}
+
+class Message #PaleTurquoise {
+  - message_id : INT <<PK>>
+  - contenu : TEXT
+  - url_fichier : TEXT
+  - date_creation : DATE
+  - groupe_collaboratif_id : INT <<FK>>
+  - utilisateur_id : INT <<FK>>
+}
+
+class Commentaire #Plum {
+  - commentaire_id : INT <<PK>>
+  - contenu : TEXT
+  - date_creation : DATE
+  - publication_id : INT <<FK>>
+  - utilisateur_id : INT <<FK>>
+}
+
+class EspaceMembre #LightCoral {
+  - utilisateur_id : INT <<PK, FK>>
+  - groupe_collaboratif_id : INT <<PK, FK>>
+  - date_inscription : DATE
+}
+
+class UtilisateurParticipant #LightSlateGray {
+  - utilisateur_id : INT <<PK, FK>>
+  - evenement_id : INT <<PK, FK>>
+  - date_inscription : DATE
+}
+
+class RessourceTelechargee #Khaki {
+  - utilisateur_id : INT <<PK, FK>>
+  - ressource_id : INT <<PK, FK>>
+  - date_telechargement : DATE
+}
+
+' Relations principales avec multiplicité maximale (*) et positionnement des relations
+Utilisateur "1" -- " * " Notification : "reçoit"
+Utilisateur "1" -- " * " Publication : "publie"
+Utilisateur "1" -- " * " Message : "envoie"
+Utilisateur "1" -- " * " Commentaire : "écrit"
+Utilisateur "1" -- " * " EspaceMembre : "appartient à"
+Utilisateur "1" -- " * " UtilisateurParticipant : "participe à"
+Utilisateur "1" -- " * " RessourceTelechargee : "télécharge"
+
+Evenement "1" -- " * " UtilisateurParticipant : "inscrit"
+Notification "1" -- "1" Utilisateur : "pour"
+
+GroupeCollaboratif "1" -- " * " Publication : "contient"
+GroupeCollaboratif "1" -- " * " Message : "contient"
+GroupeCollaboratif "1" -- " * " EspaceMembre : "a des membres"
+
+Categorie "1" -- " * " Ressource : "catégorise"
+
+Ressource "1" -- " * " RessourceTelechargee : "téléchargée par"
+
+Publication "1" -- " * " Commentaire : "est commentée"
+
+@enduml
